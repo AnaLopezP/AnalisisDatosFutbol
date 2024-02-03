@@ -58,3 +58,41 @@ plt.xlabel('Equipo')
 plt.ylabel('Partidos Jugados')
 plt.title('Partidos jugados por equipo')
 plt.show()
+
+# Después de ver los gráficos, vamos a hacer un análisis de los datos
+# Vamos a calcular el promedio de goles en casa por equipo
+promedio_goles_local = data.groupby('nombre_equipo')['goles_local'].mean()
+print("\n")
+print('-----------------Promedio de goles en casa por equipo-----------------')
+print("\n")
+print(promedio_goles_local)
+
+# Vamos a calcular el desempeño de los equipos
+partidos_jugados = data['nombre_equipo'].value_counts()
+goles_marcados = data.groupby('nombre_equipo')['goles_local'].sum()
+goles_recibidos = data.groupby('nombre_equipo')['goles_visitante'].sum()
+desempeno = pd.DataFrame({'partidos_jugados': partidos_jugados, 'goles_marcados': goles_marcados, 'goles_recibidos': goles_recibidos})
+desempeno['diferencia_goles'] = desempeno['goles_marcados'] - desempeno['goles_recibidos']
+print("\n")
+print('-----------------Desempeño de los equipos-----------------')
+print("\n")
+print(desempeno)
+
+# Vamos a calcular el número de partidos jugados por equipo
+partidos_jugados = data['nombre_equipo'].value_counts()
+print("\n")
+print('-----------------Número de partidos jugados por equipo-----------------')
+print("\n")
+print(partidos_jugados)
+
+# Vamos a calcular la varianza y la desviación estandar de los goles marcados por equipo
+varianza_goles_marcados = data.groupby('nombre_equipo')['goles_local'].var()
+desviacion_estandar_goles_marcados = data.groupby('nombre_equipo')['goles_local'].std()
+print("\n")
+print('-----------------Varianza de los goles marcados por equipo-----------------')
+print("\n")
+print(varianza_goles_marcados)
+print("\n")
+print('-----------------Desviación estandar de los goles marcados por equipo-----------------')
+print("\n")
+print(desviacion_estandar_goles_marcados)
