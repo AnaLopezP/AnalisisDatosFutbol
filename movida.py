@@ -13,4 +13,4 @@ for dato in d_uefa:
     
 
 # guardo los datos en un archivo nuevo
-d_uefa.to_csv('uefa.csv', index=False)
+d_uefa.to_csv('uefa.csv', index=False, sep=',')
