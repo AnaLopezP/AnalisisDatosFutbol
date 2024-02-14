@@ -88,3 +88,7 @@ partidos['Prob_ganar_visitante'] = [prob_enfrentada(303, 27)[2],
                                     prob_enfrentada(19, 16)[2],
                                     prob_enfrentada(9, 14)[2],
                                     prob_enfrentada(60, 3)[2]]
+
+print(partidos)
+# Ahora que tengo los datos, voy a guardarlos en un csv
+partidos.to_csv('partidos_definitivos.csv', index=False)
