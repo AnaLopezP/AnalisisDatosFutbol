@@ -25,12 +25,12 @@ print(d_uefa.head())
 
 def prob_enfrentada(equipo1, equipo2):
     # con esto cogemos el valor de la probabilidad del equipo que coincide con el nombre del club que le pasamos
-    prob_ganar1 = d_uefa[d_uefa['Club'] == equipo1]['Prob_ganar'].values[0] 
-    prob_ganar2 = d_uefa[d_uefa['Club'] == equipo2]['Prob_ganar'].values[0]
-    prob_empat1 = d_uefa[d_uefa['Club'] == equipo1]['Prob_Empat'].values[0]
-    prob_empat2 = d_uefa[d_uefa['Club'] == equipo2]['Prob_Empat'].values[0]
-    prob_perder1 = d_uefa[d_uefa['Club'] == equipo1]['Prob_perder'].values[0]
-    prob_perder2 = d_uefa[d_uefa['Club'] == equipo2]['Prob_perder'].values[0]
+    prob_ganar1 = d_uefa[d_uefa['Posicion'] == equipo1]['Prob_ganar'].values[0] 
+    prob_ganar2 = d_uefa[d_uefa['Posicion'] == equipo2]['Prob_ganar'].values[0]
+    prob_empat1 = d_uefa[d_uefa['Posicion'] == equipo1]['Prob_Empat'].values[0]
+    prob_empat2 = d_uefa[d_uefa['Posicion'] == equipo2]['Prob_Empat'].values[0]
+    prob_perder1 = d_uefa[d_uefa['Posicion'] == equipo1]['Prob_perder'].values[0]
+    prob_perder2 = d_uefa[d_uefa['Posicion'] == equipo2]['Prob_perder'].values[0]
     # la probabilidad de ganar de un equipo es: prob ganar* prob perder del otro equipo. misma lógica en los otros dos casos
     prob_enfrentada_ganar = (prob_ganar1*prob_perder2)/100
     prob_enfrentada_empat = (prob_empat1*prob_empat2)/100
@@ -60,5 +60,31 @@ partidos['Id_visitante'] = [d_uefa[d_uefa['Club'].str.contains('Manchester city'
                             d_uefa[d_uefa['Club'].str.contains('dortmund', case=False)]['Posicion'].values[0],
                             d_uefa[d_uefa['Club'].str.contains('arsenal', case=False)]['Posicion'].values[0],
                             d_uefa[d_uefa['Club'].str.contains('barcelona', case=False)]['Posicion'].values[0]]
+print(partidos)
 
-                        
+partidos['Prob_ganar_local'] = [prob_enfrentada(303, 27)[0],
+                                prob_enfrentada(94, 1)[0],
+                                prob_enfrentada(20, 133)[0],
+                                prob_enfrentada(68, 2)[0],
+                                prob_enfrentada(13, 17)[0],
+                                prob_enfrentada(19, 16)[0],
+                                prob_enfrentada(9, 14)[0],
+                                prob_enfrentada(60, 3)[0]]
+
+partidos['Prob_empate'] = [prob_enfrentada(303, 27)[1],
+                            prob_enfrentada(94, 1)[1],
+                            prob_enfrentada(20, 133)[1],
+                            prob_enfrentada(68, 2)[1],
+                            prob_enfrentada(13, 17)[1],
+                            prob_enfrentada(19, 16)[1],
+                            prob_enfrentada(9, 14)[1],
+                            prob_enfrentada(60, 3)[1]]
+
+partidos['Prob_ganar_visitante'] = [prob_enfrentada(303, 27)[2],
+                                    prob_enfrentada(94, 1)[2],
+                                    prob_enfrentada(20, 133)[2],
+                                    prob_enfrentada(68, 2)[2],
+                                    prob_enfrentada(13, 17)[2],
+                                    prob_enfrentada(19, 16)[2],
+                                    prob_enfrentada(9, 14)[2],
+                                    prob_enfrentada(60, 3)[2]]
