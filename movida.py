@@ -43,7 +43,9 @@ def prob_enfrentada(equipo1, equipo2):
 # Para el id de los equipos voy a usar la columna posicion del csv que he cargado.
 
 partidos = pd.DataFrame(columns = ['Fecha y Hora', 'Id_local', 'Id_visitante', 'Prob_ganar_local', 'Prob_empate', 'Prob_ganar_visitante'])
+
 partidos['Fecha y Hora'] = ['13/02/2024 21:00', '13/02/2024 21:00', '14/02/2024 21:00', '14/02/2024 21:00', '20/02/2024 21:00', '20/02/2024 21:00', '21/02/2024 21:00', '21/02/2024 21:00']
+
 partidos['Id_local'] = [d_uefa[d_uefa['Club'].str.contains('København', case=False)]['Posicion'].values[0],
                         d_uefa[d_uefa['Club'].str.contains('leipzig', case=False)]['Posicion'].values[0],
                         d_uefa[d_uefa['Club'].str.contains('paris saint', case=False)]['Posicion'].values[0],
@@ -52,6 +54,7 @@ partidos['Id_local'] = [d_uefa[d_uefa['Club'].str.contains('København', case=Fa
                         d_uefa[d_uefa['Club'].str.contains('PSV', case=False)]['Posicion'].values[0],
                         d_uefa[d_uefa['Club'].str.contains('porto', case=False)]['Posicion'].values[0],
                         d_uefa[d_uefa['Club'].str.contains('napoli', case=False)]['Posicion'].values[0]]
+
 partidos['Id_visitante'] = [d_uefa[d_uefa['Club'].str.contains('Manchester city', case=False)]['Posicion'].values[0],
                             d_uefa[d_uefa['Club'].str.contains('real madrid', case=False)]['Posicion'].values[0],
                             d_uefa[d_uefa['Club'].str.contains('real sociedad', case=False)]['Posicion'].values[0],
@@ -60,7 +63,6 @@ partidos['Id_visitante'] = [d_uefa[d_uefa['Club'].str.contains('Manchester city'
                             d_uefa[d_uefa['Club'].str.contains('dortmund', case=False)]['Posicion'].values[0],
                             d_uefa[d_uefa['Club'].str.contains('arsenal', case=False)]['Posicion'].values[0],
                             d_uefa[d_uefa['Club'].str.contains('barcelona', case=False)]['Posicion'].values[0]]
-print(partidos)
 
 partidos['Prob_ganar_local'] = [prob_enfrentada(303, 27)[0],
                                 prob_enfrentada(94, 1)[0],
