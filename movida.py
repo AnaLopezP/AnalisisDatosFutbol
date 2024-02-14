@@ -24,7 +24,7 @@ print(d_uefa.head())
 # Para ello, voy a hacer una función que me devuelva las probabilidades enfrentadas de dos equipos.
 
 def prob_enfrentada(equipo1, equipo2):
-    # con esto cogemos el valor de la probabilidad del equipo que coincide con el nombre del club que le pasamos
+    # con esto cogemos el valor de la probabilidad del equipo que coincide con el id del club que le pasamos
     prob_ganar1 = d_uefa[d_uefa['Posicion'] == equipo1]['Prob_ganar'].values[0] 
     prob_ganar2 = d_uefa[d_uefa['Posicion'] == equipo2]['Prob_ganar'].values[0]
     prob_empat1 = d_uefa[d_uefa['Posicion'] == equipo1]['Prob_Empat'].values[0]
