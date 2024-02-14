@@ -37,3 +37,8 @@ def prob_enfrentada(equipo1, equipo2):
     prob_enfrentada_perder = (prob_perder1*prob_ganar2)/100
     print(prob_enfrentada_ganar, prob_enfrentada_empat, prob_enfrentada_perder)
     return prob_enfrentada_ganar, prob_enfrentada_empat, prob_enfrentada_perder
+
+# Ahora que podemos calcular las probabilidades, necesito un csv con los partidos reales que se van a jugar. 
+# Las columnas van a ser las siguientes: fecha y hora, id equipo locar, id equipo visitante, probabilidad gana local, probabilidad empate, probabilidad gana visitante
+# Para el id de los equipos voy a usar la columna posicion del csv que he cargado.
+
