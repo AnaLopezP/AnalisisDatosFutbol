@@ -92,5 +92,10 @@ partidos['Prob_ganar_visitante'] = [prob_enfrentada(303, 27)[2],
                                     prob_enfrentada(60, 3)[2]]
 
 print(partidos)
+
+# Pongo la columna fecha y hora en formato datetime
+partidos['Fecha y Hora'] = pd.to_datetime(partidos['Fecha y Hora'], format='%d/%m/%Y %H:%M')
+print(partidos)
+
 # Ahora que tengo los datos, voy a guardarlos en un csv
 partidos.to_csv('partidos_definitivos.csv', index=False)
