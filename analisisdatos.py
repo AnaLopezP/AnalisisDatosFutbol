@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 # Cargar los dataset
-equipo = pd.read_csv('equipo.csv')
+equipo = pd.read_csv('equipo_raw.csv')
 partidos = pd.read_csv('partidos.csv')
 
 # Mostrar los primeros registros del dataset
