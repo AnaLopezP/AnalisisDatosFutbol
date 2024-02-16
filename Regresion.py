@@ -5,6 +5,7 @@ from sklearn.metrics import accuracy_score, classification_report
 
 # cargo los datos
 df = pd.read_csv('partidos_definitivos.csv', delimiter = ',')
+d_uefa = pd.read_csv('datos_uefa.csv', delimiter = ',')
 
 # divido los datos en variables independientes y dependientes
 X = df[['Prob_ganar_local', 'Prob_empate', 'Prob_ganar_visitante']]
@@ -37,7 +38,19 @@ print("Predicciones:")
 for i, pred in enumerate(predicciones):
     if pred == 0:
         print(f"En el partido {i+1}, es un empate.")
+        equipo_local = d_uefa.loc[d_uefa['Posicion'] == df.iloc[i]['Id_local'], 'Club'].values[0]
+        equipo_visitante = d_uefa.loc[d_uefa['Posicion'] == df.iloc[i]['Id_visitante'], 'Club'].values[0]
+        print(f"Los equipos que juegan son {equipo_local} y {equipo_visitante}.")
+        print("\n")
     elif pred == 1:
         print(f"En el partido {i+1}, gana el equipo local.")
+        equipo_local = d_uefa.loc[d_uefa['Posicion'] == df.iloc[i]['Id_local'], 'Club'].values[0]
+        equipo_visitante = d_uefa.loc[d_uefa['Posicion'] == df.iloc[i]['Id_visitante'], 'Club'].values[0]
+        print(f"Los equipos que juegan son {equipo_local} y {equipo_visitante}.")
+        print("\n")
     else:
         print(f"En el partido {i+1}, gana el equipo visitante.")
+        equipo_local = d_uefa.loc[d_uefa['Posicion'] == df.iloc[i]['Id_local'], 'Club'].values[0]
+        equipo_visitante = d_uefa.loc[d_uefa['Posicion'] == df.iloc[i]['Id_visitante'], 'Club'].values[0]
+        print(f"Los equipos que juegan son {equipo_local} y {equipo_visitante}.")
+        print("\n")

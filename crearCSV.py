@@ -6,6 +6,8 @@ import pandas as pd
 d_uefa = pd.read_csv('datos_uefa.csv', delimiter=',')
 d_uefa.columns = ["Posicion", "Club", "Pais", "Participaciones", "Titulos", "Partidos_Jug", "Partidos_Gan", "Partidos_Empat", "Partidos_perd", "Goles_favor", "Goles_contra", "Puntos", "Diferencia_goles"]
 print(d_uefa.head())
+# guardo el csv con las nuevas columnas 
+d_uefa.to_csv('datos_uefa.csv', index=False)
 
 #Para hallar la probabilidad de ganar un partido, dividimos el numero de partidos ganados entre los jugados y multiplicamos por 100
 prob_ganar = (d_uefa['Partidos_Gan']/d_uefa['Partidos_Jug'])*100

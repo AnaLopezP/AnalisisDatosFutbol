@@ -1,4 +1,4 @@
-Pos,Club,Country,Part,Titles,Pld,W,D,L,F,A,Pts,GD
+Posicion,Club,Pais,Participaciones,Titulos,Partidos_Jug,Partidos_Gan,Partidos_Empat,Partidos_perd,Goles_favor,Goles_contra,Puntos,Diferencia_goles
 1,Real Madrid CF,ESP,53,14,476,285,81,110,1047,521,651,526
 2,FC Bayern München,GER,39,6,382,229,76,77,804,373,534,431
 3,FC Barcelona,ESP,33,5,339,197,76,66,667,343,470,324
