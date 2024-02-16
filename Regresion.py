@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
+from crearCSV import prob_enfrentada
 
 # cargo los datos
 df = pd.read_csv('partidos_definitivos.csv', delimiter = ',')
@@ -60,4 +61,11 @@ Ronda2 = pd.DataFrame(columns = ['Id_local', 'Id_visitante', 'Prob_ganar_local',
 Ronda2['Id_local'] = [d_uefa[d_uefa['Club'].str.contains('Manchester City FC', case=False)]['Posicion'].values[0],
                       d_uefa[d_uefa['Club'].str.contains('Real Madrid CF', case=False)]['Posicion'].values[0],
                       d_uefa[d_uefa['Club'].str.contains('Paris Saint-Germain', case=False)]['Posicion'].values[0],
-print(Ronda2)
+                      d_uefa[d_uefa['Club'].str.contains('FC Internazionale Milano', case=False)]['Posicion'].values[0]]
+                      
+Ronda2['Id_visitante'] = [d_uefa[d_uefa['Club'].str.contains('FC Barcelona', case=False)]['Posicion'].values[0],
+                          d_uefa[d_uefa['Club'].str.contains('FC Bayern München', case=False)]['Posicion'].values[0],
+                          d_uefa[d_uefa['Club'].str.contains('Arsenal FC', case=False)]['Posicion'].values[0],
+                          d_uefa[d_uefa['Club'].str.contains('Borussia Dortmund', case=False)]['Posicion'].values[0]]
+
+Ronda2['Prob_ganar_local'] = [prob_enfrentada(303, 27)[0],]
