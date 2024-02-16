@@ -54,3 +54,10 @@ for i, pred in enumerate(predicciones):
         equipo_visitante = d_uefa.loc[d_uefa['Posicion'] == df.iloc[i]['Id_visitante'], 'Club'].values[0]
         print(f"Los equipos que juegan son {equipo_local} y {equipo_visitante}.")
         print("\n")
+        
+# Ahora que tengo las predicciones, guardo en un csv los partidos que se van a jugar con los ganadores
+Ronda2 = pd.DataFrame(columns = ['Id_local', 'Id_visitante', 'Prob_ganar_local', 'Prob_empate', 'Prob_ganar_visitante'])
+Ronda2['Id_local'] = [d_uefa[d_uefa['Club'].str.contains('Manchester City FC', case=False)]['Posicion'].values[0],
+                      d_uefa[d_uefa['Club'].str.contains('Real Madrid CF', case=False)]['Posicion'].values[0],
+                      d_uefa[d_uefa['Club'].str.contains('Paris Saint-Germain', case=False)]['Posicion'].values[0],
+print(Ronda2)
