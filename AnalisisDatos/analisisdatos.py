@@ -98,5 +98,5 @@ print("\n")
 print(desviacion_estandar_goles_marcados)
 
 
-# De los datos, podemos concluir que el equipo al que mejor le ha ido esta temporada (?) es a Manchester United, con una media de 3.3 goles por partido y ningún gol en su contra.
+# De los datos, podemos concluir que el equipo al que mejor le ha ido esta temporada es a Manchester United, con una media de 3.3 goles por partido y ningún gol en su contra.
 # Tambien podemos ver que el peor equipo es el Dynamo Kyiv, con una media de 0.3 goles por partido, y 12 goles totales en contra.
