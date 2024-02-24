@@ -1,13 +1,17 @@
 import numpy as np 
 import matplotlib.pyplot as plt
 import pandas as pd
+import os
+
+directorio_script = os.path.dirname(__file__)
 
 # cargo los datos
-d_uefa = pd.read_csv('datos_uefa.csv', delimiter=',')
+d_uefa_ruta = os.path.join(os.path.dirname(__file__), 'datos_uefa.csv')
+d_uefa = pd.read_csv(d_uefa_ruta, delimiter=',')
 d_uefa.columns = ["Posicion", "Club", "Pais", "Participaciones", "Titulos", "Partidos_Jug", "Partidos_Gan", "Partidos_Empat", "Partidos_perd", "Goles_favor", "Goles_contra", "Puntos", "Diferencia_goles"]
 print(d_uefa.head())
 # guardo el csv con las nuevas columnas 
-d_uefa.to_csv('datos_uefa.csv', index=False)
+d_uefa.to_csv(os.path.join(directorio_script, 'datos_uefa.csv'), index=False)
 
 #Para hallar la probabilidad de ganar un partido, dividimos el numero de partidos ganados entre los jugados y multiplicamos por 100
 prob_ganar = (d_uefa['Partidos_Gan']/d_uefa['Partidos_Jug'])*100
@@ -100,4 +104,4 @@ partidos['Fecha y Hora'] = pd.to_datetime(partidos['Fecha y Hora'], format='%d/%
 print(partidos)
 
 # Ahora que tengo los datos, voy a guardarlos en un csv
-partidos.to_csv('partidos_definitivos.csv', index=False)
+partidos.to_csv(os.path.join(directorio_script, 'partidos_definitivos.csv'), index=False)

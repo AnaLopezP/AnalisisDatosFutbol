@@ -3,10 +3,15 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
 from crearCSV import prob_enfrentada
+import os
+
+directorio_script = os.path.dirname(__file__)
 
 # cargo los datos
-df = pd.read_csv('partidos_definitivos.csv', delimiter = ',')
-d_uefa = pd.read_csv('datos_uefa.csv', delimiter = ',')
+df_ruta = os.path.join(os.path.dirname(__file__), 'partidos_definitivos.csv')
+df = pd.read_csv(df_ruta, delimiter = ',')
+datos_uefa_ruta = os.path.join(os.path.dirname(__file__), 'datos_uefa.csv')
+d_uefa = pd.read_csv(datos_uefa_ruta, delimiter = ',')
 
 # divido los datos en variables independientes y dependientes
 X = df[['Prob_ganar_local', 'Prob_empate', 'Prob_ganar_visitante']]
@@ -35,27 +40,30 @@ print(classification_report(y_test, y_pred))
 
 # Ahora que tengo el modelo, puedo predecir los resultados de los partidos que se van a jugar
 predicciones = modelo.predict(X)
-print("Predicciones:")
-for i, pred in enumerate(predicciones):
-    if pred == 0:
-        print(f"En el partido {i+1}, es un empate.")
-        equipo_local = d_uefa.loc[d_uefa['Posicion'] == df.iloc[i]['Id_local'], 'Club'].values[0]
-        equipo_visitante = d_uefa.loc[d_uefa['Posicion'] == df.iloc[i]['Id_visitante'], 'Club'].values[0]
-        print(f"Los equipos que juegan son {equipo_local} y {equipo_visitante}.")
-        print("\n")
-    elif pred == 1:
-        print(f"En el partido {i+1}, gana el equipo local.")
-        equipo_local = d_uefa.loc[d_uefa['Posicion'] == df.iloc[i]['Id_local'], 'Club'].values[0]
-        equipo_visitante = d_uefa.loc[d_uefa['Posicion'] == df.iloc[i]['Id_visitante'], 'Club'].values[0]
-        print(f"Los equipos que juegan son {equipo_local} y {equipo_visitante}.")
-        print("\n")
-    else:
-        print(f"En el partido {i+1}, gana el equipo visitante.")
-        equipo_local = d_uefa.loc[d_uefa['Posicion'] == df.iloc[i]['Id_local'], 'Club'].values[0]
-        equipo_visitante = d_uefa.loc[d_uefa['Posicion'] == df.iloc[i]['Id_visitante'], 'Club'].values[0]
-        print(f"Los equipos que juegan son {equipo_local} y {equipo_visitante}.")
-        print("\n")
+
+def print_predicciones(pred):
+    print("Predicciones:")
+    for i, pred in enumerate(pred):
+        if pred == 0:
+            print(f"En el partido {i+1}, es un empate.")
+            equipo_local = d_uefa.loc[d_uefa['Posicion'] == df.iloc[i]['Id_local'], 'Club'].values[0]
+            equipo_visitante = d_uefa.loc[d_uefa['Posicion'] == df.iloc[i]['Id_visitante'], 'Club'].values[0]
+            print(f"Los equipos que juegan son {equipo_local} y {equipo_visitante}.")
+            print("\n")
+        elif pred == 1:
+            print(f"En el partido {i+1}, gana el equipo local.")
+            equipo_local = d_uefa.loc[d_uefa['Posicion'] == df.iloc[i]['Id_local'], 'Club'].values[0]
+            equipo_visitante = d_uefa.loc[d_uefa['Posicion'] == df.iloc[i]['Id_visitante'], 'Club'].values[0]
+            print(f"Los equipos que juegan son {equipo_local} y {equipo_visitante}.")
+            print("\n")
+        else:
+            print(f"En el partido {i+1}, gana el equipo visitante.")
+            equipo_local = d_uefa.loc[d_uefa['Posicion'] == df.iloc[i]['Id_local'], 'Club'].values[0]
+            equipo_visitante = d_uefa.loc[d_uefa['Posicion'] == df.iloc[i]['Id_visitante'], 'Club'].values[0]
+            print(f"Los equipos que juegan son {equipo_local} y {equipo_visitante}.")
+            print("\n")
         
+print_predicciones(predicciones)
 # Ahora que tengo las predicciones, guardo en un csv los partidos que se van a jugar con los ganadores
 Ronda2 = pd.DataFrame(columns = ['Id_local', 'Id_visitante', 'Prob_ganar_local', 'Prob_empate', 'Prob_ganar_visitante'])
 Ronda2['Id_local'] = [d_uefa[d_uefa['Club'].str.contains('Manchester City FC', case=False)]['Posicion'].values[0],
@@ -68,4 +76,22 @@ Ronda2['Id_visitante'] = [d_uefa[d_uefa['Club'].str.contains('FC Barcelona', cas
                           d_uefa[d_uefa['Club'].str.contains('Arsenal FC', case=False)]['Posicion'].values[0],
                           d_uefa[d_uefa['Club'].str.contains('Borussia Dortmund', case=False)]['Posicion'].values[0]]
 
-Ronda2['Prob_ganar_local'] = [prob_enfrentada(303, 27)[0],]
+# Calculamos las probabilidades enfrentadas para los partidos de la Ronda 2
+Ronda2['Prob_ganar_local'] = [prob_enfrentada(302, 3)[0],
+                              prob_enfrentada(96, 4)[0],
+                              prob_enfrentada(19, 9)[0],
+                              prob_enfrentada(13, 16)[0]]
+
+Ronda2['Prob_empate'] = [prob_enfrentada(302, 3)[1],
+                         prob_enfrentada(96, 4)[1],
+                         prob_enfrentada(19, 9)[1],
+                         prob_enfrentada(13, 16)[1]]
+
+Ronda2['Prob_ganar_visitante'] = [prob_enfrentada(302, 3)[2],
+                                   prob_enfrentada(96, 4)[2],
+                                   prob_enfrentada(19, 9)[2],
+                                   prob_enfrentada(13, 16)[2]]
+
+# Realizamos las predicciones para los partidos de la Ronda 2
+predicciones_ronda2 = modelo.predict(Ronda2[['Prob_ganar_local', 'Prob_empate', 'Prob_ganar_visitante']])
+print_predicciones(predicciones_ronda2)
