@@ -1,10 +1,13 @@
 import numpy as np 
 import matplotlib.pyplot as plt
 import pandas as pd
+import os
 
 # Cargar los dataset
-equipo = pd.read_csv('equipo_raw.csv')
-partidos = pd.read_csv('partidos.csv')
+equipo_raw_rute = os.path.join(os.path.dirname(__file__), 'equipo_raw.csv')
+equipo = pd.read_csv(equipo_raw_rute)
+partidos_rute = os.path.join(os.path.dirname(__file__), 'partidos.csv')
+partidos = pd.read_csv(partidos_rute)
 
 # Mostrar los primeros registros del dataset
 print(equipo.head())
