@@ -1,6 +1,6 @@
 from pyspark.sql import SparkSession
 from pyspark.ml.feature import VectorAssembler
-from pyspark.ml.classification import LogisticRegression
+from pyspark.ml.classification import DecisionTreeClassifier
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 import os
 
@@ -24,8 +24,8 @@ data_with_features = assembler.transform(data)
 # Dividir los datos en conjuntos de entrenamiento y prueba
 (train_data, test_data) = data_with_features.randomSplit([0.8, 0.2], seed=1234)
 
-# Entrenar un modelo de regresión logística
-lr = LogisticRegression(labelCol="Id_local", featuresCol="features", maxIter=10)
+# Entrenar un modelo de arbol de decisiones
+lr = DecisionTreeClassifier(labelCol="Id_local", featuresCol="features")
 model = lr.fit(train_data)
 
 # Realizar predicciones en el conjunto de prueba
