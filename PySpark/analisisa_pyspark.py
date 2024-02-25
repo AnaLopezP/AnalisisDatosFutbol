@@ -4,55 +4,43 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from pyspark.ml.feature import VectorAssembler
 from pyspark.ml.classification import LogisticRegression
-from pyspark.ml.evaluation import BinaryClassificationEvaluator
+from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 
-# Creo una sesión de spark
-spark = SparkSession.builder.appName('Analisis de Datos').getOrCreate()
+# Creo una sesión de Spark
+spark = SparkSession.builder.appName('Predicción Champions League').getOrCreate()
 
-# Cargo el csv
-d_uefa_ruta = os.path.join(os.path.dirname(__file__), 'datos_uefa.csv')
-d_uefa = spark.read.csv(d_uefa_ruta, header=True, inferSchema=True)
+# Rutas de los archivos
+uefa_d_ruta = os.path.join(os.path.dirname(__file__), 'datos_uefa.csv')
+partidos_ruta = os.path.join(os.path.dirname(__file__), 'partidos_definitivos.csv')
 
-# LIMPIEZA DE DATOS
-# Quito valores nulos
-d_uefa = d_uefa.dropna()
+# Cargo el csv de la UEFA
+uefa_df = spark.read.csv(uefa_d_ruta, header=True, inferSchema=True)
 
-# Elimino datos duplicados
-d_uefa = d_uefa.dropDuplicates()
+# Cargo el csv de los partidos
+partidos_df = spark.read.csv(partidos_ruta, header=True, inferSchema=True)
 
-# ANÁLISIS EXPLOTATORIO DE DATOS
-# Calculo estadísticas descriptivas
-d_uefa.describe().show()
-
-# Hago agregaciones
-d_uefa.groupBy("Pais").agg({"Partidos_Jug": "sum", "Titulos": "sum"}).show()
-pd_d_uefa = d_uefa.toPandas()
-pd_d_uefa.plot(x="Posicion", y="Participaciones", kind="bar")
-plt.show()
+# Unir ambos conjuntos de datos en función del campo 'Pais' para obtener un conjunto de datos combinado
+combined_df = uefa_df.join(partidos_df, uefa_df.Pais == partidos_df.Pais)
 
 # REGRESIÓN LOGÍSTICA
 # Creo un vector assembler
-assembler = VectorAssembler(inputCols=["Participaciones", "Titulos", "Partidos_Jug", "Partidos_Gan", "Partidos_Empat", 
-                                       "Partidos_perd", "Goles_favor", "Goles_contra", "Puntos", "Diferencia_goles"],
+assembler = VectorAssembler(inputCols=["Participaciones", "Titulos", "Partidos_Jug", "Partidos_Gan", "Partidos_Empat",
+                                       "Partidos_perd", "Goles_favor", "Goles_contra", "Puntos", "Diferencia_goles",
+                                       "Prob_ganar_local", "Prob_empate", "Prob_ganar_visitante"],
                             outputCol="features")
-data_assembled = assembler.transform(d_uefa)
-
-# Divido los datos en conjuntos de entrenamiento y prueba
-train, test = data_assembled.randomSplit([0.7, 0.3], seed=12345)
+data_assembled = assembler.transform(combined_df)
 
 # Inicializo el modelo de regresión logística
-lr = LogisticRegression(featuresCol="features", labelCol="Posicion")
+lr = LogisticRegression(featuresCol="features", labelCol="Posicion", family="multinomial")
 
 # Entreno el modelo
-lr_model = lr.fit(train)
+lr_model = lr.fit(data_assembled)
 
-# predicciones en el conjunto de prueba
-predictions = lr_model.transform(test)
+# Predicciones
+predictions = lr_model.transform(data_assembled)
 
-# Evaluo el rendimiento del modelo
-evaluator = BinaryClassificationEvaluator(rawPredictionCol="rawPrediction", labelCol="Posicion")
-accuracy = evaluator.evaluate(predictions)
-print("Accuracy:", accuracy)
+# Resultados
+predictions.select("Pais", "Club", "prediction").show()
 
-# Detener la sesión de Spark
+# Detengo la sesión de Spark
 spark.stop()
