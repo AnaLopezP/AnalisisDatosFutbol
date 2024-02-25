@@ -60,7 +60,7 @@ d_uefasp = spark.read.csv(d_uefa_rute, header=True, inferSchema=True)
 
 # Crear un ensamblador de características para convertir las características en un solo vector
 assembler = VectorAssembler(
-    inputCols=["Posicion","Club","Participaciones","Titulos","Partidos_Jug","Partidos_Empat","Partidos_perd","Goles_favor","Goles_contra","Puntos","Diferencia_goles","Prob_ganar","Prob_empatar","Prob_perder","Probabilidad_marcar_gol","Probabilidad_recibir_gol"],
+    inputCols=["Posicion","Participaciones","Partidos_Gan","Partidos_Jug","Partidos_Empat","Partidos_perd","Goles_favor","Goles_contra","Puntos","Diferencia_goles","Prob_ganar","Prob_empatar","Prob_perder","Probabilidad_marcar_gol","Probabilidad_recibir_gol"],
     outputCol="features")
 
 # Transformar los datos para incluir la columna de características
@@ -70,13 +70,17 @@ data_with_features = assembler.transform(d_uefasp)
 (train_data, test_data) = data_with_features.randomSplit([0.8, 0.2], seed=1234)
 
 # Entrenar un modelo de árbol de decisiones
-dt = DecisionTreeClassifier(labelCol="Partidos_gan", featuresCol="features")
+dt = DecisionTreeClassifier(labelCol= "Titulos", featuresCol="features")
 model = dt.fit(train_data)
 
 # Realizar predicciones en el conjunto de prueba
 predictions = model.transform(test_data)
 
 # Evaluar el rendimiento del modelo
-evaluator = MulticlassClassificationEvaluator(labelCol="Partidos_gan", predictionCol="prediction", metricName="accuracy")
+evaluator = MulticlassClassificationEvaluator(labelCol= "Titulos", predictionCol="prediction", metricName="accuracy")
 accuracy = evaluator.evaluate(predictions)
+print("\n")
+print("\n")
 print("Exactitud del modelo:", accuracy)
+print("\n")
+print("\n")
