@@ -9,9 +9,6 @@ spark = SparkSession.builder.appName("Regresión Logística de Partidos").getOrC
 # Cargar el CSV de los partidos
 partidos_df = spark.read.csv("partidos.csv", header=True, inferSchema=True)
 
-# Preparar los datos si es necesario
-# (puede que necesites hacer un poco de limpieza de datos aquí)
-
 # Crear un VectorAssembler para combinar las características
 feature_cols = ["Prob_ganar_local", "Prob_empate", "Prob_ganar_visitante"]
 assembler = VectorAssembler(inputCols=feature_cols, outputCol="features")
