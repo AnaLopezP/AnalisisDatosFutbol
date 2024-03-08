@@ -80,3 +80,45 @@ def train(modelo, data_loader, optimizador):
     avg_loss = train_loss / len(data_loader.dataset)
     print('Entrenamiento: pérdida media: %f' % avg_loss)
     return avg_loss
+
+def test(modelo, data_loader):
+    modelo.eval()
+    test_loss = 0
+    correct = 0
+    
+    with t.no_grad():
+        batch_count = 0
+        for batch, tensor in enumerate(data_loader):
+            batch_count += 1
+            data, target = tensor
+            out = modelo(data)
+            
+            test_loss += t.nn.functional.cross_entropy(out, target, reduction='sum').item()
+            _, pred = t.max(out.data, 1)
+            correct += t.sum(target == pred).item()
+            
+    # calculamos la pérdida media y la precisión
+    avg_loss = test_loss / batch_count
+    print('Prueba: pérdida media: %f, precisión: %f' % (test_loss, 100. * correct / len(data_loader.dataset)))
+    return avg_loss
+
+loss_crit = nn.CrossEntropyLoss()
+
+# Usamos adam como optimizador
+learnig_rate = 0.001
+optimizador = t.optim.Adam(modelo.parameters(), lr=learnig_rate)
+optimizador.zero_grad()
+
+epoch_nums = []
+training_loss = []
+validation_loss = []
+
+epochs = 50
+for epoch in range(1, epochs +1):
+    print('Epoch %d' % epoch)
+    train_loss = train(modelo, train_loader, optimizador)
+    test_loss = test(modelo, test_loader)
+    
+    epoch_nums.append(epoch)
+    training_loss.append(train_loss)
+    validation_loss.append(test_loss)
