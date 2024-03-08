@@ -5,6 +5,9 @@ import pandas as pd
 import numpy as np
 import os
 from sklearn.model_selection import train_test_split
+from matplotlib import pyplot as plt
+from sklearn.metrics import confusion_matrix
+import numpy as np
 
 #Ponemos una semilla aleatoria
 t.manual_seed(0)
@@ -122,3 +125,37 @@ for epoch in range(1, epochs +1):
     epoch_nums.append(epoch)
     training_loss.append(train_loss)
     validation_loss.append(test_loss)
+    
+# Graficamos la pérdida
+plt.plot(epoch_nums, training_loss)
+plt.plot(epoch_nums, validation_loss)
+plt.xlabel('epoch')
+plt.ylabel('loss')
+plt.legend(['training', 'validation'], loc='upper right')
+plt.show()
+
+for param_tensor in modelo.state_dict():
+    print(param_tensor, '\n', modelo.state_dict()[param_tensor].size(), '\n', modelo.state_dict()[param_tensor], '\n')
+    
+# evaluamos el modelo
+modelo.eval()
+x = t.Tendosr(X_test).float()
+_, pred = t.max(modelo(x).data, 1)
+
+# matriz de confusión
+cm = confusion_matrix(y_test, pred.numpy())
+plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
+plt.colorbar()
+tick_marks = np.arange(len(labels))
+plt.xticks(tick_marks, labels, rotation=45)
+plt.yticks(tick_marks, labels)
+plt.xlabel('Predicción')
+plt.ylabel('Real')
+plt.show()
+
+# Guardamos el modelo
+modelo_ruta = os.path.join(os.path.dirname(__file__), 'modelo_uefa.pth')
+t.save(modelo.state_dict(), modelo_ruta)
+del modelo
+print('Modelo guardado en %s' % modelo_ruta)
+print('Modelo guardado como modelo_uefa.pth en la carpeta actual.')
