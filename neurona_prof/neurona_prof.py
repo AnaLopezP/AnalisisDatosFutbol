@@ -59,3 +59,24 @@ class UefaNet(nn.Module):
 # creamos una instancia
 modelo = UefaNet()
 print(modelo)
+
+# Entremanos la red
+def train(modelo, data_loader, optimizador):
+    modelo.train()
+    train_loss = 0
+    
+    for batch, tensor in enumerate(data_loader):
+        data, target = tensor
+        # feed forward
+        optimizador.zero_grad()
+        out = modelo(data)
+        # calculamos la pérdida
+        loss = t.nn.functional.cross_entropy(out, target)
+        # backpropagation
+        loss.backward()
+        optimizador.step()
+        
+    # calculamos la pérdida media
+    avg_loss = train_loss / len(data_loader.dataset)
+    print('Entrenamiento: pérdida media: %f' % avg_loss)
+    return avg_loss
