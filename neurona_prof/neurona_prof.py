@@ -68,9 +68,9 @@ hl = 10
 class UefaNet(nn.Module):
     def __init__(self):
         super(UefaNet, self).__init__()
-        self.fc1 = nn.Linear(len(features), hl)
+        self.fc1 = nn.Linear(14, hl)
         self.fc2 = nn.Linear(hl, hl)
-        self.fc3 = nn.Linear(hl, len(label))
+        self.fc3 = nn.Linear(hl, 14)
         
     def forward(self, x):
         x = t.relu(self.fc1(x))
@@ -131,50 +131,51 @@ learning_rate = 0.001
 optimizador = t.optim.Adam(modelo.parameters(), lr=learning_rate)
 #optimizador.zero_grad()
 
-epoch_nums = []
-training_loss = []
-validation_loss = []
+if __name__ == '__main__':
+    epoch_nums = []
+    training_loss = []
+    validation_loss = []
 
-epochs = 50
-for epoch in range(1, epochs +1):
-    print('Epoch %d' % epoch)
-    train_loss = train(modelo, train_loader, optimizador)
-    test_loss = test(modelo, test_loader)
-    
-    epoch_nums.append(epoch)
-    training_loss.append(train_loss)
-    validation_loss.append(test_loss)
-    
-# Graficamos la pérdida
-plt.plot(epoch_nums, training_loss)
-plt.plot(epoch_nums, validation_loss)
-plt.xlabel('epoch')
-plt.ylabel('loss')
-plt.legend(['training', 'validation'], loc='upper right')
-plt.show()
+    epochs = 2
+    for epoch in range(1, epochs +1):
+        print('Epoch %d' % epoch)
+        train_loss = train(modelo, train_loader, optimizador)
+        test_loss = test(modelo, test_loader)
+        
+        epoch_nums.append(epoch)
+        training_loss.append(train_loss)
+        validation_loss.append(test_loss)
+        
+    # Graficamos la pérdida
+    plt.plot(epoch_nums, training_loss)
+    plt.plot(epoch_nums, validation_loss)
+    plt.xlabel('epoch')
+    plt.ylabel('loss')
+    plt.legend(['training', 'validation'], loc='upper right')
+    plt.show()
 
-for param_tensor in modelo.state_dict():
-    print(param_tensor, '\n', modelo.state_dict()[param_tensor].size(), '\n', modelo.state_dict()[param_tensor], '\n')
-    
-# evaluamos el modelo
-modelo.eval()
-x = t.Tensor(X_test).float()
-_, pred = t.max(modelo(x).data, 1)
+    for param_tensor in modelo.state_dict():
+        print(param_tensor, '\n', modelo.state_dict()[param_tensor].size(), '\n', modelo.state_dict()[param_tensor], '\n')
+        
+    # evaluamos el modelo
+    modelo.eval()
+    x = t.Tensor(X_test.values).float()
+    _, pred = t.max(modelo(x).data, 1)
 
-# matriz de confusión
-cm = confusion_matrix(y_test, pred.numpy())
-plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
-plt.colorbar()
-tick_marks = np.arange(len(label))
-plt.xticks(tick_marks, label, rotation=45)
-plt.yticks(tick_marks, label)
-plt.xlabel('Predicción')
-plt.ylabel('Real')
-plt.show()
+    # matriz de confusión
+    cm = confusion_matrix(y_test, pred.numpy())
+    plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
+    plt.colorbar()
+    tick_marks = np.arange(len(label))
+    plt.xticks(tick_marks, label, rotation=45)
+    plt.yticks(tick_marks, label)
+    plt.xlabel('Predicción')
+    plt.ylabel('Real')
+    plt.show()
 
-# Guardamos el modelo
-modelo_ruta = os.path.join(os.path.dirname(__file__), 'modelo_uefa.pth')
-t.save(modelo.state_dict(), modelo_ruta)
-del modelo
-print('Modelo guardado en %s' % modelo_ruta)
-print('Modelo guardado como modelo_uefa.pth en la carpeta actual.')
+    # Guardamos el modelo
+    modelo_ruta = os.path.join(os.path.dirname(__file__), 'modelo_uefa.pth')
+    t.save(modelo.state_dict(), modelo_ruta)
+    del modelo
+    print('Modelo guardado en %s' % modelo_ruta)
+    print('Modelo guardado como modelo_uefa.pth en la carpeta actual.')
