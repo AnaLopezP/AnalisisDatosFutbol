@@ -18,7 +18,7 @@ d_uefa = pd.read_csv(d_uefa_ruta, delimiter=',')
 
 # Separamos 70-30 en train y test
 features = d_uefa.drop(columns=['Prob_ganar' ,'Prob_empatar','Prob_perder'])
-#labels = d_uefa['Prob_ganar' ,'Prob_empatar','Prob_perder']
+#label = d_uefa['Prob_ganar' ,'Prob_empatar','Prob_perder']
 label = "estiloFutbol"
 
 X_train, X_test, y_train, y_test = train_test_split(features, label, test_size=0.3, random_state=0)
@@ -52,7 +52,7 @@ class UefaNet(nn.Module):
         super(UefaNet, self).__init__()
         self.fc1 = nn.Linear(len(features), hl)
         self.fc2 = nn.Linear(hl, hl)
-        self.fc3 = nn.Linear(hl, len(labels))
+        self.fc3 = nn.Linear(hl, len(label))
         
     def forward(self, x):
         x = t.relu(self.fc1(x))
@@ -147,9 +147,9 @@ _, pred = t.max(modelo(x).data, 1)
 cm = confusion_matrix(y_test, pred.numpy())
 plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
 plt.colorbar()
-tick_marks = np.arange(len(labels))
-plt.xticks(tick_marks, labels, rotation=45)
-plt.yticks(tick_marks, labels)
+tick_marks = np.arange(len(label))
+plt.xticks(tick_marks, label, rotation=45)
+plt.yticks(tick_marks, label)
 plt.xlabel('Predicción')
 plt.ylabel('Real')
 plt.show()
