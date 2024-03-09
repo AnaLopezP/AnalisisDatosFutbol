@@ -26,6 +26,9 @@ def clasificar_estilo(row):
 
 d_uefa['estiloFutbol'] = d_uefa.apply(clasificar_estilo, axis=1)
 
+# Guardmos el csv con la nueva columna
+d_uefa.to_csv(d_uefa_ruta, index=False)
+
 # Quito las columnas que no son numericas
 d_uefa = d_uefa.drop(columns=['Club', 'Pais'])
 
