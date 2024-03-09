@@ -136,7 +136,7 @@ if __name__ == '__main__':
     training_loss = []
     validation_loss = []
 
-    epochs = 2
+    epochs = 50
     for epoch in range(1, epochs +1):
         print('Epoch %d' % epoch)
         train_loss = train(modelo, train_loader, optimizador)
@@ -161,17 +161,6 @@ if __name__ == '__main__':
     modelo.eval()
     x = t.Tensor(X_test.values).float()
     _, pred = t.max(modelo(x).data, 1)
-
-    # matriz de confusión
-    cm = confusion_matrix(y_test, pred.numpy())
-    plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
-    plt.colorbar()
-    tick_marks = np.arange(len(label))
-    plt.xticks(tick_marks, label, rotation=45)
-    plt.yticks(tick_marks, label)
-    plt.xlabel('Predicción')
-    plt.ylabel('Real')
-    plt.show()
 
     # Guardamos el modelo
     modelo_ruta = os.path.join(os.path.dirname(__file__), 'modelo_uefa.pth')
