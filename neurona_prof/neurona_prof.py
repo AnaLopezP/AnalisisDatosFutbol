@@ -17,10 +17,11 @@ d_uefa_ruta = os.path.join(os.path.dirname(__file__), 'datos_uefa.csv')
 d_uefa = pd.read_csv(d_uefa_ruta, delimiter=',')
 
 # Separamos 70-30 en train y test
-features = d_uefa.drop(columns=['Posicion'])
-labels = d_uefa['Posicion']
+features = d_uefa.drop(columns=['Prob_ganar' ,'Prob_empatar','Prob_perder'])
+#labels = d_uefa['Prob_ganar' ,'Prob_empatar','Prob_perder']
+label = "estiloFutbol"
 
-X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.3, random_state=0)
+X_train, X_test, y_train, y_test = train_test_split(features, label, test_size=0.3, random_state=0)
 print('Set entrenamiento: %d, Set de prueba: %d \n' % (len(X_train), len(X_test)))
 
 # miramos los primero 25 de entrenamiento
