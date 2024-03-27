@@ -12,24 +12,35 @@ import matplotlib.image as mpimg
 import random
 
 # Cargamos los datos
-data_path = 'data/shapes/'
+# Definimos la ruta de los datos
+data_path =  os.path.join(os.path.dirname(os.path.abspath(__file__)), "imagenes")
+print('DIRECTORIO: ', data_path)
+
 
 classes = os.listdir(data_path)
 classes.sort()
 print(len(classes), 'classes:', classes)
 
-# Mostramos la primera imagen en cada carpeta
+# Mostramos la primera imagen 
 fig = plt.figure(figsize=(8, 12))
 i = 0
 for sub_dir in os.listdir(data_path):
     i+=1
-    img_file = os.listdir(os.path.join(data_path,sub_dir))[0]
-    img_path = os.path.join(data_path, sub_dir, img_file)
-    img = mpimg.imread(img_path)
-    a=fig.add_subplot(1, len(classes),i)
-    a.axis('off')
-    imgplot = plt.imshow(img)
-    a.set_title(img_file)
+    sub_dir_path = os.path.join(data_path, sub_dir)
+    print(sub_dir_path)
+    if os.path.isdir(sub_dir_path):
+        print('HE ENTRADO EN EL IF')
+        img_files = [f for f in os.listdir(sub_dir_path) if f.endswith('.png') or f.endswith('.jpg')] 
+    else:
+        print('NO HE ENTRADO EN EL IF')
+    if img_files:
+        img_file = img_files[0]
+        img_path = os.path.join(sub_dir_path, img_file)
+        img = mpimg.imread(img_path)
+        a = fig.add_subplot(1, len(classes), i)
+        a.axis('off')
+        imgplot = plt.imshow(img)
+        a.set_title(img_file)
 plt.show()
 
 # Función para cargar datos utilizando cargadores de entrenamiento y prueba
@@ -118,7 +129,8 @@ class Net(nn.Module):
         x = F.dropout(x, training=self.training)
         
         # Aplanar
-        x = x.view(-1, 32 * 32 * 24)
+        #-1, 32 * 32 * 24
+        x = x.view(x.size(0), -1)
         # Alimentar a la capa totalmente conectada para predecir la clase
         x = self.fc(x)
         # Devolver el tensor log_softmax
@@ -131,6 +143,7 @@ def train(model, device, cargador_entrenamiento, optimizer, epoch):
     # Set the model to training mode
     model.train()
     train_loss = 0
+    batch_idx = 0
     print("Epoch:", epoch)
     # Process the images in batches
     for batch_idx, (data, target) in enumerate(cargador_entrenamiento):
