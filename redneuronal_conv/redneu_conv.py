@@ -339,7 +339,8 @@ def create_image (size, shape):
 classnames = os.listdir(data_path)
 classnames.sort()
 shape = classnames[random.randint(0, len(classnames)-1)]
-img = create_image ((128,128), shape)
+#img = create_image ((128,128), shape)
+img = create_image ((225,225), shape)
 
 # Display the image
 plt.axis('off')
@@ -351,4 +352,4 @@ model.load_state_dict(torch.load(model_file))
 
 # Call the predction function
 index = predict_image(model, img)
-print(classes[index])
+print('PREDICCION IMAGEN: ', classes[index])
