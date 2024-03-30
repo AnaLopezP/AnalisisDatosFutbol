@@ -114,7 +114,7 @@ class Net(nn.Module):
         # Necesitamos aplanar estos y alimentarlos a una capa totalmente conectada
         # para asignarlos a la probabilidad de cada clase
         #self.fc = nn.Linear(in_features=32 * 32 * 24, out_features=num_classes)
-        self.fc = nn.Linear(in_features=75264, out_features=num_classes)
+        self.fc = nn.Linear(in_features=874680, out_features=num_classes)
 
 
     def forward(self, x):
@@ -340,7 +340,7 @@ classnames = os.listdir(data_path)
 classnames.sort()
 shape = classnames[random.randint(0, len(classnames)-1)]
 #img = create_image ((128,128), shape)
-img = create_image ((225,225), shape)
+img = create_image ((790,741), shape)
 
 # Display the image
 plt.axis('off')
