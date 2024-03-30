@@ -345,6 +345,7 @@ img = create_image ((225,225), shape)
 # Display the image
 plt.axis('off')
 plt.imshow(img)
+plt.show()
 
 # Create a new model class and load the saved weights
 model = Net()
