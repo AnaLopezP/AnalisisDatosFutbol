@@ -91,7 +91,7 @@ print('Cargadores de datos listos')
 # Creamos una clase de red neuronal
 class Net(nn.Module):
     # Constructor
-    def __init__(self, num_classes=3):
+    def __init__(self, num_classes=3):#3
         super(Net, self).__init__()
         
         # Las imágenes son RGB, así que el canal es 3. Aplicamos 12 filtros en la primera capa convolucional.
@@ -113,7 +113,9 @@ class Net(nn.Module):
         # Por lo tanto, nuestros tensores de características ahora son de 32 x 32, y hemos generado 24 de ellos
         # Necesitamos aplanar estos y alimentarlos a una capa totalmente conectada
         # para asignarlos a la probabilidad de cada clase
-        self.fc = nn.Linear(in_features=32 * 32 * 24, out_features=num_classes)
+        #self.fc = nn.Linear(in_features=32 * 32 * 24, out_features=num_classes)
+        self.fc = nn.Linear(in_features=75264, out_features=num_classes)
+
 
     def forward(self, x):
         # Usar una función de activación ReLU después de la capa 1 (convolución 1 y pool)
@@ -277,7 +279,8 @@ plt.ylabel("Actual Shape")
 plt.show()
 
 # Guardamos el modelo
-model_file = 'models/shape_classifier.pt'
+#model_file = 'models/shape_classifier.pt'
+model_file = 'C:/Users/Usuario/Documents/GITHUB2/AnalisisDatosFutbol/redneuronal_conv/models/shape_classifier.pt'
 torch.save(model.state_dict(), model_file)
 del model
 print('model saved as', model_file)
@@ -332,7 +335,8 @@ def create_image (size, shape):
     return np.array(img)
 
 # Creamos una imagen de prueba aleatoria
-classnames = os.listdir(os.path.join('data', 'shapes'))
+#classnames = os.listdir(os.path.join('data', 'shapes'))
+classnames = os.listdir(data_path)
 classnames.sort()
 shape = classnames[random.randint(0, len(classnames)-1)]
 img = create_image ((128,128), shape)
