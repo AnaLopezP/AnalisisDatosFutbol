@@ -59,7 +59,8 @@ def load_dataset(data_path):
 
 # cargamos las imagenes
 import os  
-data_path = 'data/shapes/'
+data_path =  os.path.join(os.path.dirname(os.path.abspath(__file__)), "imagenes")
+print('DIRECTORIO: ', data_path)
 
 # cogemos los cargadores de datos de entrenamiento y validacion
 train_loader, test_loader = load_dataset(data_path)
@@ -260,6 +261,7 @@ def predict_image(classifier, image):
 
 shape = classes[np.random.choice(len(classes)-1)]
 img = create_image((128,128), shape)
+print('Shape:', shape)
 plt.imshow(img)
 
 index = predict_image(model, img)
