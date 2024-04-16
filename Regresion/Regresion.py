@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
-from crearCSV import prob_enfrentada
+from Regresion.crearCSV import prob_enfrentada
 import os
 
 directorio_script = os.path.dirname(__file__)
