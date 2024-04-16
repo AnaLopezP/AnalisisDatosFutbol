@@ -25,7 +25,7 @@ def calcular_probabilidad_goles(data):
 
 
 # cargo el csv
-d_uefa_ruta = os.path.join(os.path.dirname(__file__), 'datos_uefa.csv')
+d_uefa_ruta = os.path.join(os.path.dirname(__file__), 'datos_uefa_mejorados.csv')
 d_uefa = pd.read_csv(d_uefa_ruta, delimiter=',')
 
 # Calculo las probabilidades
@@ -33,7 +33,7 @@ d_uefa_prob = calcular_probabilidades(d_uefa)
 d_uefa_prob = calcular_probabilidad_goles(d_uefa_prob)
 
 # Guardo el csv con las nuevas columnas
-d_uefa_prob.to_csv(os.path.join(os.path.dirname(__file__), 'datos_uefa.csv'), index=False)
+d_uefa_prob.to_csv(os.path.join(os.path.dirname(__file__), 'datos_uefa_mejorados.csv'), index=False)
 
 # Mostrar resumen estadístico de las columnas numéricas
 print(d_uefa.describe())
@@ -55,7 +55,7 @@ print(correlation)
 spark = SparkSession.builder.appName('uefa').getOrCreate()
 
 # leo el csv con Spark
-d_uefa_rute = os.path.join(os.path.dirname(__file__), 'datos_uefa.csv')
+d_uefa_rute = os.path.join(os.path.dirname(__file__), 'datos_uefa_mejorados.csv')
 d_uefasp = spark.read.csv(d_uefa_rute, header=True, inferSchema=True)
 
 # Crear un ensamblador de características para convertir las características en un solo vector

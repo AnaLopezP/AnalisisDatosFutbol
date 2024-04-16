@@ -11,7 +11,7 @@ from sklearn.metrics import mean_squared_error
 import os
 
 # Cargar los datos
-data_ruta = os.path.join(os.path.dirname(__file__), 'datos_uefa.csv')
+data_ruta = os.path.join(os.path.dirname(__file__), 'datos_uefa_mejorados.csv')
 data = pd.read_csv(data_ruta, delimiter=',')
 
 # Ingeniería de características
