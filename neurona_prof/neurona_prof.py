@@ -13,7 +13,7 @@ import numpy as np
 # Si la probabilidad de meter gol es alta (mas 0.5) --> ataque
 # Si la probabilidad de recibir gol es baja (menos 0.5) --> defensa
 # Cargamos los datos
-d_uefa_ruta = os.path.join(os.path.dirname(__file__), 'datos_uefa_mejorados.csv')
+d_uefa_ruta = os.path.join(os.path.dirname(__file__), 'datos_uefa_mejorados_clasif.csv')
 d_uefa = pd.read_csv(d_uefa_ruta, delimiter=',')
 
 def clasificar_estilo(row):
