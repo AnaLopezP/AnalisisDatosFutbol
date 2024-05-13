@@ -179,7 +179,8 @@ if __name__ == '__main__':
 modelo = UefaNet()
 modelo.load_state_dict(t.load(modelo_ruta))
 modelo.eval()
-x_nuevos = None
+x_nuevos = features.head(5)
+x_nuevos = x_nuevos.drop(columns=['estiloFutbol']) #quito esta columna porque quiero que me la prediga
 x = t.Tensor(x_nuevos.values).float()
 _, pred = t.max(modelo(x).data, 1)
 print("Predicciones: ", pred)
