@@ -175,7 +175,7 @@ if __name__ == '__main__':
     print('Modelo guardado en %s' % modelo_ruta)
     print('Modelo guardado como modelo_uefa.pth en la carpeta actual.')
     
-# Ponnemos el modelo a prueba
+# Ponnemos el modelo a prueba (COMPROBAR QUE FUNCIONA)
 modelo = UefaNet()
 modelo.load_state_dict(t.load(modelo_ruta))
 modelo.eval()
