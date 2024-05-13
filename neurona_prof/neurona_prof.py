@@ -174,3 +174,12 @@ if __name__ == '__main__':
     del modelo
     print('Modelo guardado en %s' % modelo_ruta)
     print('Modelo guardado como modelo_uefa.pth en la carpeta actual.')
+    
+# Ponnemos el modelo a prueba
+modelo = UefaNet()
+modelo.load_state_dict(t.load(modelo_ruta))
+modelo.eval()
+x_nuevos = None
+x = t.Tensor(x_nuevos.values).float()
+_, pred = t.max(modelo(x).data, 1)
+print("Predicciones: ", pred)
