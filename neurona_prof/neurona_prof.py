@@ -9,6 +9,10 @@ from matplotlib import pyplot as plt
 from sklearn.metrics import confusion_matrix
 import numpy as np
 
+# Definimos la red neuronal
+#numero de capas ocultas
+hl = 10
+
 # definimos la red
 class UefaNet(nn.Module):
     def __init__(self):
@@ -132,9 +136,6 @@ if __name__ == '__main__':
     test_loader = td.DataLoader(test_ds, batch_size=20, shuffle=True, num_workers=1)
     print("HASTA AQUÍ TODO BIEN")
 
-    # Definimos la red neuronal
-    #numero de capas ocultas
-    hl = 10
 
     
     epoch_nums = []
