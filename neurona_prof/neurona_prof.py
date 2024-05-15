@@ -175,12 +175,3 @@ if __name__ == '__main__':
     print('Modelo guardado en %s' % modelo_ruta)
     print('Modelo guardado como modelo_uefa.pth en la carpeta actual.')
     
-# Ponnemos el modelo a prueba (COMPROBAR QUE FUNCIONA)
-modelo = UefaNet()
-modelo.load_state_dict(t.load(modelo_ruta))
-modelo.eval()
-x_nuevos = features.head(5)
-x_nuevos = x_nuevos.drop(columns=['estiloFutbol']) #quito esta columna porque quiero que me la prediga
-x = t.Tensor(x_nuevos.values).float()
-_, pred = t.max(modelo(x).data, 1)
-print("Predicciones: ", pred)
