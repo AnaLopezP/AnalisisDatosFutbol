@@ -6,7 +6,7 @@ import os
 # cargamos los datos que vamos a clasificar
 d_uefa_ruta = os.path.join(os.path.dirname(__file__), 'datos_uefa_mejorados_clasif.csv')
 d_uefa = pd.read_csv(d_uefa_ruta, delimiter=',')
-x_nuevos = d_uefa.drop(['club', 'pais'], axis=1)
+x_nuevos = d_uefa.drop(['Club', 'Pais'], axis=1)
 x_nuevos = x_nuevos.head(5)
 hl = 10
 entrada = x_nuevos.shape[1]
