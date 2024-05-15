@@ -11,15 +11,15 @@ import numpy as np
 
 # Definimos la red neuronal
 #numero de capas ocultas
-hl = 10
+
 
 # definimos la red
 class UefaNet(nn.Module):
-    def __init__(self):
+    def __init__(self, hl, entrada):
         super(UefaNet, self).__init__()
-        self.fc1 = nn.Linear(14, hl)
+        self.fc1 = nn.Linear(entrada, hl)
         self.fc2 = nn.Linear(hl, hl)
-        self.fc3 = nn.Linear(hl, 14)
+        self.fc3 = nn.Linear(hl, entrada)
         
     def forward(self, x):
         x = t.relu(self.fc1(x))
@@ -27,9 +27,6 @@ class UefaNet(nn.Module):
         x = t.relu(self.fc3(x))
         return x
     
-# creamos una instancia
-modelo = UefaNet()
-print(modelo)
 
 # Entremanos la red
 def train(modelo, data_loader, optimizador):
@@ -73,12 +70,7 @@ def test(modelo, data_loader):
     print('Prueba: pérdida media: %f, precisión: %f' % (test_loss, 100. * correct / len(data_loader.dataset)))
     return avg_loss
 
-loss_crit = nn.CrossEntropyLoss()
 
-# Usamos adam como optimizador
-learning_rate = 0.001
-optimizador = t.optim.Adam(modelo.parameters(), lr=learning_rate)
-#optimizador.zero_grad()
 
 if __name__ == '__main__':
     
@@ -104,6 +96,8 @@ if __name__ == '__main__':
 
     # Quito las columnas que no son numericas
     d_uefa = d_uefa.drop(columns=['Club', 'Pais'])
+    
+
 
     #Ponemos una semilla aleatoria
     t.manual_seed(0)
@@ -136,7 +130,18 @@ if __name__ == '__main__':
     test_loader = td.DataLoader(test_ds, batch_size=20, shuffle=True, num_workers=1)
     print("HASTA AQUÍ TODO BIEN")
 
+    # creamos una instancia
+    hl = 10
+    entrada = X_train.shape[1]
+    modelo = UefaNet(hl, entrada)
+    print(modelo)
+    
+    loss_crit = nn.CrossEntropyLoss()
 
+    # Usamos adam como optimizador
+    learning_rate = 0.001
+    optimizador = t.optim.Adam(modelo.parameters(), lr=learning_rate)
+    #optimizador.zero_grad()
     
     epoch_nums = []
     training_loss = []

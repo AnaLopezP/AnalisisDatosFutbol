@@ -7,12 +7,13 @@ import os
 d_uefa_ruta = os.path.join(os.path.dirname(__file__), 'datos_uefa_mejorados_clasif.csv')
 d_uefa = pd.read_csv(d_uefa_ruta, delimiter=',')
 x_nuevos = d_uefa.drop(['Club', 'Pais'], axis=1)
+x_nuevos = x_nuevos.drop(['Prob_ganar', 'Prob_empatar', 'Prob_perder'], axis=1)
 x_nuevos = x_nuevos.head(5)
 hl = 10
 entrada = x_nuevos.shape[1]
 
 # Cargamos el modelo
-modelo = UefaNet(entrada, hl)
+modelo = UefaNet(hl, entrada)
 ruta_modelo = os.path.join(os.path.dirname(__file__), 'modelo_uefa.pth')
 modelo.load_state_dict(torch.load(ruta_modelo))
 modelo.eval()
